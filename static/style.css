@@ -23,19 +23,47 @@ form#formPaciente {
   padding: 10px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+
+  /* Nuevo: diseño responsive */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
+
 form#formPaciente div {
   margin-bottom: 8px;
+  flex: 1 1 100%; /* en móvil ocupa todo el ancho */
 }
+
 form#formPaciente label {
-  margin-right: 5px;
+  width: 100%;
   font-weight: bold;
 }
-form#formPaciente input, form#formPaciente select {
-  margin-right: 15px;
-  padding: 4px 6px;
+
+form#formPaciente input,
+form#formPaciente select {
+  width: 100%;
+  padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius: 6px;
+}
+
+/* En pantallas grandes, el formulario se acomoda en línea */
+@media (min-width: 768px) {
+  form#formPaciente div {
+    flex: none;
+    margin-bottom: 8px;
+  }
+
+  form#formPaciente label {
+    width: auto;
+    margin-right: 10px;
+  }
+
+  form#formPaciente input,
+  form#formPaciente select {
+    width: auto;
+  }
 }
 
 /* ---------------- BOTONES ---------------- */
