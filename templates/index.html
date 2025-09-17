@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Gestor de Pacientes</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<style>
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+  th { background-color: #f2f2f2; }
+  .highlight { background-color: yellow; }
+  button { cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>Gestor de Pacientes</h1>
+
+<h2>Agregar paciente</h2>
+<form method="POST" id="formPaciente" action="/agregar">
+  <div>
+    <label>Provincia:</label><input name="provincia" required>
+    <label>Municipio:</label><input name="municipio" required>
+    <label>Policlínico:</label><input name="policlinico" required>
+  </div>
+  <div>
+    <label>Nombre y Apellidos:</label><input name="nombre" required>
+    <label>Sexo:</label>
+    <select name="sexo">
+      <option value=""></option>
+      <option value="M">M</option>
+      <option value="F">F</option>
+    </select>
+    <label>Fecha de nacimiento (dd/mm/aaaa):</label><input name="fecha_nac">
+    <label>Edad:</label><input name="edad" type="number" min="0">
+  </div>
+  <div>
+    <label>Grupo Dispensarial:</label>
+    <select name="grupo_disp">
+      <option value=""></option><option>I</option><option>II</option><option>III</option><option>IV</option>
+    </select>
+    <label>Escolaridad:</label>
+    <select name="escolaridad">
+      <option value=""></option><option>NE</option><option>PST</option><option>PT</option>
+      <option>ST</option><option>PU</option><option>TM</option><option>U</option>
+    </select>
+    <label>Ocupación:</label>
+    <select name="ocupacion">
+      <option value=""></option>
+      <option>Ama de casa</option><option>Estudiante</option><option>Trabajador</option>
+      <option>SMG</option><option>Recluso</option><option>Desocupado</option>
+    </select>
+    <label>Color de piel:</label>
+    <select name="color_piel">
+      <option value=""></option><option>Blanco</option><option>Negro</option><option>Mestizo</option>
+    </select>
+  </div>
+  <div>
+    <label>Factor de riesgo (separados por coma):</label><input name="factor_riesgo">
+    <label>Riesgo preconcepcional (separados por coma):</label><input name="riesgo_preconcepcional">
+    <label>Embarazada:</label>
+    <select name="embarazada"><option value=""></option><option>Sí</option><option>No</option></select>
+  </div>
+  <div>
+    <label>Enfermedades (separadas por coma):</label><input name="enfermedades">
+    <label>Discapacidades (separadas por coma):</label><input name="discapacidades">
+  </div>
+  <button type="submit">Agregar paciente</button>
+</form>
+
+<h2>Búsqueda rápida</h2>
+<input type="text" id="searchInput" placeholder="Buscar...">
+
+<h2>Pacientes registrados</h2>
+<button onclick="window.location.href='/export'">Exportar a Excel</button>
+
+<table id="tablaPacientes">
+  <thead>
+    <tr>
+      <th>Acciones</th>
+      <th>Provincia</th><th>Municipio</th><th>Policlínico</th><th>Nombre y Apellidos</th>
+      <th>Sexo</th><th>Fecha de nacimiento</th><th>Edad</th><th>Grupo Dispensarial</th>
+      <th>Escolaridad</th><th>Ocupación</th><th>Color de piel</th>
+      <th>Factor de riesgo</th><th>Riesgo preconcepcional</th><th>Embarazada</th>
+      <th>Enfermedades</th><th>Discapacidades</th>
+      <th>Lactante</th><th>Mujer en edad fértil</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in pacientes %}
+    <tr data-id="{{ p[0] }}">
+      <td><button onclick="eliminarPaciente({{ p[0] }})">Eliminar</button></td>
+      {% for val in p[1:] %}
+        <td>{{ val }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>
