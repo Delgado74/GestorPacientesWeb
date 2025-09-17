@@ -12,8 +12,8 @@ c = conn.cursor()
 c.execute("""
 CREATE TABLE IF NOT EXISTS pacientes(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    provincia TEXT, municipio TEXT, policlinico TEXT, nombre TEXT,
-    sexo TEXT, fecha_nac TEXT, edad INTEGER, grupo_disp TEXT,
+    provincia TEXT, municipio TEXT, policlinico TEXT, consultorio TEXT,
+    nombre TEXT, sexo TEXT, fecha_nac TEXT, edad INTEGER, grupo_disp TEXT,
     escolaridad TEXT, ocupacion TEXT, color_piel TEXT,
     factor_riesgo TEXT, riesgo_preconcepcional TEXT,
     embarazada TEXT, enfermedades TEXT, discapacidades TEXT,
@@ -56,16 +56,18 @@ def agregar():
     c = conn.cursor()
     c.execute("""
         INSERT INTO pacientes (
-            provincia, municipio, policlinico, nombre, sexo, fecha_nac, edad,
+            provincia, municipio, policlinico, consultorio, nombre, sexo, fecha_nac, edad,
             grupo_disp, escolaridad, ocupacion, color_piel,
             factor_riesgo, riesgo_preconcepcional, embarazada,
             enfermedades, discapacidades, lactante, mujer_fertil
-        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-    """, [data["provincia"], data["municipio"], data["policlinico"], data["nombre"],
-          data["sexo"], data["fecha_nac"], edad, data["grupo_disp"], data["escolaridad"],
-          data["ocupacion"], data["color_piel"], data["factor_riesgo"],
-          data["riesgo_preconcepcional"], data["embarazada"], data["enfermedades"],
-          data["discapacidades"], data["lactante"], data["mujer_fertil"]])
+        ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    """, [
+        data["provincia"], data["municipio"], data["policlinico"], data["consultorio"],
+        data["nombre"], data["sexo"], data["fecha_nac"], edad,
+        data["grupo_disp"], data["escolaridad"], data["ocupacion"], data["color_piel"],
+        data["factor_riesgo"], data["riesgo_preconcepcional"], data["embarazada"],
+        data["enfermedades"], data["discapacidades"], data["lactante"], data["mujer_fertil"]
+    ])
     conn.commit()
     conn.close()
     return redirect("/")
@@ -92,13 +94,23 @@ def export():
 @app.route("/filtrar", methods=["POST"])
 def filtrar():
     criterios = request.json  # dict {campo: valor}
+
+    # Lista de campos válidos para proteger de inyección SQL
+    campos_validos = {
+        "provincia","municipio","policlinico","consultorio","nombre","sexo","fecha_nac","edad",
+        "grupo_disp","escolaridad","ocupacion","color_piel",
+        "factor_riesgo","riesgo_preconcepcional","embarazada",
+        "enfermedades","discapacidades","lactante","mujer_fertil"
+    }
+
     conn = sqlite3.connect(DB)
     c = conn.cursor()
     query = "SELECT * FROM pacientes WHERE 1=1"
     params = []
     for campo, valor in criterios.items():
-        query += f" AND LOWER({campo}) LIKE ?"
-        params.append(f"%{valor.lower()}%")
+        if campo in campos_validos and valor.strip():
+            query += f" AND LOWER({campo}) LIKE ?"
+            params.append(f"%{valor.lower()}%")
     c.execute(query, params)
     resultados = c.fetchall()
     conn.close()
