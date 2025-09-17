@@ -5,13 +5,6 @@
 <title>Gestor de Pacientes</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 <script src="{{ url_for('static', filename='script.js') }}"></script>
-<style>
-  table { border-collapse: collapse; width: 100%; }
-  th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
-  th { background-color: #f2f2f2; }
-  .highlight { background-color: yellow; }
-  button { cursor: pointer; }
-</style>
 </head>
 <body>
 
@@ -23,6 +16,7 @@
     <label>Provincia:</label><input name="provincia" required>
     <label>Municipio:</label><input name="municipio" required>
     <label>Policlínico:</label><input name="policlinico" required>
+    <label>Consultorio:</label><input name="consultorio" required>
   </div>
   <div>
     <label>Nombre y Apellidos:</label><input name="nombre" required>
@@ -74,12 +68,14 @@
 
 <h2>Pacientes registrados</h2>
 <button onclick="window.location.href='/export'">Exportar a Excel</button>
+<button onclick="abrirFiltro()">Filtro avanzado</button>
 
 <table id="tablaPacientes">
   <thead>
     <tr>
       <th>Acciones</th>
-      <th>Provincia</th><th>Municipio</th><th>Policlínico</th><th>Nombre y Apellidos</th>
+      <th>Provincia</th><th>Municipio</th><th>Policlínico</th><th>Consultorio</th>
+      <th>Nombre y Apellidos</th>
       <th>Sexo</th><th>Fecha de nacimiento</th><th>Edad</th><th>Grupo Dispensarial</th>
       <th>Escolaridad</th><th>Ocupación</th><th>Color de piel</th>
       <th>Factor de riesgo</th><th>Riesgo preconcepcional</th><th>Embarazada</th>
@@ -98,6 +94,32 @@
     {% endfor %}
   </tbody>
 </table>
+
+<!-- ---------------- MODAL DE FILTRO ---------------- -->
+<div id="overlay"></div>
+<div id="modalFiltro">
+  <h2>Filtro avanzado</h2>
+  <form id="formFiltro">
+    <div>
+      <label>Provincia:</label><input type="text" name="provincia">
+      <label>Municipio:</label><input type="text" name="municipio">
+      <label>Policlínico:</label><input type="text" name="policlinico">
+      <label>Consultorio:</label><input type="text" name="consultorio">
+    </div>
+    <div>
+      <label>Grupo Dispensarial:</label><input type="text" name="grupo_disp">
+      <label>Escolaridad:</label><input type="text" name="escolaridad">
+      <label>Ocupación:</label><input type="text" name="ocupacion">
+    </div>
+    <div>
+      <label>Factor de riesgo:</label><input type="text" name="factor_riesgo">
+      <label>Enfermedades:</label><input type="text" name="enfermedades">
+      <label>Discapacidades:</label><input type="text" name="discapacidades">
+    </div>
+    <button type="button" onclick="aplicarFiltro()">Aplicar filtro</button>
+    <button type="button" onclick="cerrarFiltro()">Cerrar</button>
+  </form>
+</div>
 
 </body>
 </html>
