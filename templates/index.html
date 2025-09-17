@@ -100,23 +100,8 @@
 <div id="modalFiltro">
   <h2>Filtro avanzado</h2>
   <form id="formFiltro">
-    <div>
-      <label>Provincia:</label><input type="text" name="provincia">
-      <label>Municipio:</label><input type="text" name="municipio">
-      <label>Policlínico:</label><input type="text" name="policlinico">
-      <label>Consultorio:</label><input type="text" name="consultorio">
-    </div>
-    <div>
-      <label>Grupo Dispensarial:</label><input type="text" name="grupo_disp">
-      <label>Escolaridad:</label><input type="text" name="escolaridad">
-      <label>Ocupación:</label><input type="text" name="ocupacion">
-    </div>
-    <div>
-      <label>Factor de riesgo:</label><input type="text" name="factor_riesgo">
-      <label>Enfermedades:</label><input type="text" name="enfermedades">
-      <label>Discapacidades:</label><input type="text" name="discapacidades">
-    </div>
-    <button type="button" onclick="aplicarFiltro()">Aplicar filtro</button>
+    <div id="camposFiltro"></div> <!-- aquí JS inyecta los filtros dinámicos -->
+    <button type="submit">Aplicar filtro</button>
     <button type="button" onclick="cerrarFiltro()">Cerrar</button>
   </form>
 </div>
