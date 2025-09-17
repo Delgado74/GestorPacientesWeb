@@ -14,17 +14,17 @@ La aplicación utiliza **Flask** y **SQLite** como backend, y HTML/CSS/JS en fro
 
 ## Estructura del proyecto
 
+```text
 GestorPacientesWeb/
 ├─ app.py
-├─ pacientes.db # Se crea automáticamente al ejecutar la app
+├─ pacientes.db      # Se crea automáticamente al ejecutar la app
 ├─ requirements.txt
 ├─ templates/
-│ └─ index.html
+│  └─ index.html
 └─ static/
-├─ style.css
-└─ script.js
-
-
+   ├─ style.css
+   └─ script.js
+```
 ---
 
 ## Requisitos
@@ -125,4 +125,5 @@ Notas importantes
 
 Licencia
 
+Este proyecto está bajo la licencia MIT.
 Este proyecto es para uso educativo y profesional dentro de entornos médicos.
